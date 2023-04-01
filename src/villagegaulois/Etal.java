@@ -3,7 +3,7 @@ package villagegaulois;
 import personnages.Gaulois;
 import produit.Produit;
 
-public class Etal<P extends Produit> implements lEtal<P>{
+public class Etal<P extends Produit> implements lEtal{
 	private Gaulois vendeur;
 	private Produit produit;
 	private int quantiteDebutMarche;
@@ -33,7 +33,7 @@ public class Etal<P extends Produit> implements lEtal<P>{
 	@Override
 	public void occuperEtal(Gaulois vendeur, Produit produit, int quantite) {
 		this.vendeur = vendeur;
-		this.produit = produit;
+		this.produit = (P)produit;
 		this.quantite = quantite;
 		quantiteDebutMarche = quantite;
 		etalOccupe = true;
