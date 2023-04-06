@@ -1,15 +1,63 @@
 package scenarioTest;
 
 import personnages.Gaulois;
+import produit.Poisson;
+import produit.Produit;
+import produit.Sanglier;
+import villagegaulois.DepenseMarchand;
 import villagegaulois.Etal;
+import villagegaulois.IEtal;
+import villagegaulois.IVillage;
 
 public class Scenario {
 
 	public static void main(String[] args) {
 
-		// TODO Partie 4 : creer de la classe anonyme Village
+		IVillage village = new IVillage(){
+			IEtal [] marche= new IEtal[3];
+			int delem = 0;
+			@Override
+			public <P extends Produit> boolean installerVendeur(Etal<P> etal, Gaulois vendeur, P[] produit, int prix) {
+				if (delem<marche.length) {
+					etal.installerVendeur(vendeur, produit, prix);
+					marche[delem] = etal;
+					++delem;
+					return true;
+				}
+				return false;
+			}
 
-		// fin
+			@Override
+			public DepenseMarchand[] acheterProduit(String produit, int quantiteSouhaitee) {
+				int nbEtals = marche.length-1;
+				DepenseMarchand[] marchands = new DepenseMarchand[nbEtals+1];
+				int nbMarchand = 0;
+				while(quantiteSouhaitee>0 && nbEtals>=0) {
+					int produits;
+					produits = marche[nbEtals].contientProduit(produit, quantiteSouhaitee);
+					if (produits!=0) {
+						quantiteSouhaitee-=produits;
+						marchands[nbMarchand] = new DepenseMarchand(marche[nbEtals].getVendeur(), produits, produit, marche[nbEtals].acheterProduit(produits));
+						nbMarchand++;
+					}
+					nbEtals--;
+				}
+				return marchands;
+			}
+			
+			@Override
+			public String toString() {
+				StringBuilder ugoSucks = new StringBuilder();
+				int ugoSucks2 = marche.length-1; 
+				while(ugoSucks2>=0) {
+					ugoSucks.append(marche[ugoSucks2].etatEtal());
+					ugoSucks2--;
+				}
+				return ugoSucks.toString();
+			}
+			
+		};
+
 
 		Gaulois ordralfabetix = new Gaulois("Ordralfabétix", 9);
 		Gaulois obelix = new Gaulois("Obélix", 20);

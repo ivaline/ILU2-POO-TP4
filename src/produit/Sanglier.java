@@ -7,13 +7,13 @@ public class Sanglier extends Produit {
 	private int poids;
 	
 	public Sanglier(int poids, Gaulois chasseur) {
-		super("sanglier",Unite.kilogramme);
+		super("sanglier","kg");
 		this.poids = poids;
 		this.chasseur = chasseur;
 	}
 	
 	public String getDesc() {
-		return "sanglier" + " " + Unite.kilogramme + " " + poids+ " " + chasseur;
+		return super.getName() + "  de " + this.poids + " kg chasse par " + this.chasseur.getNom();
 	}
 	
 }
